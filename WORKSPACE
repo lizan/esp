@@ -35,11 +35,23 @@ git_repository(
     remote = "https://nginx.googlesource.com/nginx",
 )
 
-load("@nginx//:build.bzl", "nginx_repositories")
+load("@nginx//:build.bzl", "nginx_repositories_boringssl", "nginx_repositories_zlib", "nginx_repositories_pkgoss")
 
-nginx_repositories(
-    bind = True,
-    nginx = "@nginx//",
+nginx_repositories_boringssl(bind=True)
+nginx_repositories_zlib(bind=True)
+nginx_repositories_pkgoss(nginx="@nginx//")
+
+new_http_archive(
+    name = "nginx_pcre",
+    build_file = "BUILD.pcre",
+    sha256 = "ccdf7e788769838f8285b3ee672ed573358202305ee361cfec7a4a4fb005bbc7",
+    strip_prefix = "pcre-8.39",
+    url = "https://ftp.pcre.org/pub/pcre/pcre-8.39.tar.gz",
+)
+ 
+bind(
+    name = "pcre",
+    actual = "@nginx_pcre//:pcre"
 )
 
 # Required by gRPC.
