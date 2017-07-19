@@ -648,7 +648,8 @@ cc_library(
         "@nginx//:core",
         "@nginx//:http",
         ":grpc_web_protos",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 )
 
 cc_proto_library(
@@ -669,7 +670,7 @@ cc_proto_library(
 
     native.new_git_repository(
         name = "grpc_web_git",
-        commit = "f9870b816441a42a20ab6d3a14d889330f29a54b",
+        commit = "d800d8041cd921c7e26a69e42edde1ff6ff7b6da",
         remote = "https://github.com/lizan/grpc-web.git",
         build_file_content = BUILD,
     )

@@ -186,6 +186,9 @@ extern ngx_module_t  ngx_http_stub_status_module;
 #if (NGX_HTTP_ENDPOINTS_RUNTIME)
 extern ngx_module_t  ngx_esp_module;
 #endif
+#if (NGX_GRPC_GATEWAY)
+extern ngx_module_t grpc_gateway_module;
+#endif
 #if (NGX_HTTP)
 extern ngx_module_t  ngx_http_write_filter_module;
 extern ngx_module_t  ngx_http_header_filter_module;
@@ -465,6 +468,9 @@ ngx_module_t *ngx_modules[] = {
 #endif
 #if (NGX_HTTP_ENDPOINTS_RUNTIME)
     &ngx_esp_module,
+#endif
+#if (NGX_GRPC_GATEWAY)
+    &grpc_gateway_module,
 #endif
 #if (NGX_HTTP)
     &ngx_http_write_filter_module,
@@ -749,6 +755,9 @@ char *ngx_module_names[] = {
 #if (NGX_HTTP_ENDPOINTS_RUNTIME)
     "ngx_esp_module",
 #endif
+#if (NGX_GRPC_GATEWAY)
+    "grpc_gateway_module",
+#endif
 #if (NGX_HTTP)
     "ngx_http_write_filter_module",
     "ngx_http_header_filter_module",
@@ -803,7 +812,6 @@ char *ngx_module_names[] = {
 #if (NGX_HTTP_ENDPOINTS_RUNTIME)
     "ngx_esp_error_module",
 #endif
-
 #if (NGX_MAIL)
     "ngx_mail_module",
     "ngx_mail_core_module",

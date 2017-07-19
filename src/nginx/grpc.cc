@@ -26,6 +26,7 @@
 //
 #include "src/nginx/grpc.h"
 
+#include "net/grpc/gateway/frontend/nginx_http_frontend.h"
 #include "src/grpc/proxy_flow.h"
 #include "src/nginx/environment.h"
 #include "src/nginx/error.h"
@@ -132,10 +133,25 @@ bool CanBeTranscoded(ngx_esp_request_ctx_t *ctx) {
          !ctx->request_handler->method()->response_type_url().empty();
 }
 
+bool IsGrpcWebRequest(ngx_http_request_t *r) {
+  return r->headers_in.content_type &&
+         strncasecmp(
+             ::grpc::gateway::kContentTypeGrpcWeb,
+             reinterpret_cast<char *>(r->headers_in.content_type->value.data),
+             ::grpc::gateway::kContentTypeGrpcWebLength) == 0 &&
+         r->method == NGX_HTTP_POST;
+}
+
 // The content handler for locations configured with grpc_pass.
 ngx_int_t GrpcBackendHandler(ngx_http_request_t *r) {
   ngx_log_error(NGX_LOG_DEBUG, r->connection->log, 0,
                 "GrpcBackendHandler: Handling request");
+
+  if (IsGrpcWebRequest(r)) {
+    ngx_log_error(NGX_LOG_DEBUG, r->connection->log, 0,
+                  "GrpcBackendHandler: Handling grpc-web request");
+    return grpc_gateway_handler(r);
+  }
 
   ngx_esp_loc_conf_t *espcf = reinterpret_cast<ngx_esp_loc_conf_t *>(
       ngx_http_get_module_loc_conf(r, ngx_esp_module));

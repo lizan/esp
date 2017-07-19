@@ -102,6 +102,7 @@ cc_library(
     ],
     defines = [
         "NGX_HTTP_ENDPOINTS_RUNTIME",
+        "NGX_GRPC_GATEWAY",
     ],
     visibility = [":__subpackages__"],
     deps = [
@@ -115,6 +116,7 @@ cc_library(
         "//external:servicecontrol",
         "//src/grpc",
         "//src/grpc:zero_copy_stream",
+        "@grpc_web_git//:grpc_web",
         "@nginx//:core",
         "@nginx//:http",
     ],

@@ -318,6 +318,7 @@ nginx_suite(
         "transcoding_status.t",
         "transcoding_streaming.t",
         "transcoding_utf8.t",
+        "grpc_web.t",
     ],
     deps = [
         ":perl_library",
