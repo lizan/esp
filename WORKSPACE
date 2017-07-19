@@ -53,6 +53,7 @@ load(
     "protobuf_repositories",
     "googletest_repositories",
     "grpc_repositories",
+    "grpc_web_repositories",
     "transcoding_repositories",
 )
 
@@ -93,6 +94,8 @@ protobuf_repositories()
 googletest_repositories()
 
 grpc_repositories()
+
+grpc_web_repositories()
 
 transcoding_repositories()
 

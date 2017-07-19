@@ -631,3 +631,45 @@ def servicecontrol_client_repositories(bind=True):
             name = "quotacontrol_genproto",
             actual = "@servicecontrol_client_git//proto:quotacontrol_genproto",
         )
+
+def grpc_web_repositories(bind=True):
+    BUILD = """
+load("@protobuf_git//:protobuf.bzl", "cc_proto_library")
+
+cc_library(
+    name = "grpc_web",
+    srcs = glob([
+        "net/**/*.cc",
+        "net/**/*.c",
+        "net/**/*.h",
+    ]),
+    deps = [
+        "//external:grpc++",
+        "@nginx//:core",
+        "@nginx//:http",
+        ":grpc_web_protos",
+    ]
+)
+
+cc_proto_library(
+    name = "grpc_web_protos",
+    srcs = glob([
+        "net/**/*.proto",
+    ]),
+    include = ".",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//external:cc_wkt_protos",
+    ],
+    protoc = "//external:protoc",
+    default_runtime = "//external:protobuf",
+    use_grpc_plugin = True,
+)
+"""
+
+    native.new_git_repository(
+        name = "grpc_web_git",
+        commit = "f9870b816441a42a20ab6d3a14d889330f29a54b",
+        remote = "https://github.com/lizan/grpc-web.git",
+        build_file_content = BUILD,
+    )
